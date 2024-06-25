@@ -52,6 +52,7 @@ class ProxyService
     {
         $proxyPool = ProxyPool::query()
             ->where('ip_usable', true)
+            ->orderBy('sort')
             ->first();
 
         if (!$proxyPool) {

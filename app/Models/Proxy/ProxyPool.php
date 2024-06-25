@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
  * @property string|null $request_url 请求代理地址
  * @property int|null $ip_usable 是否可用
  * @property string $remark 备注
+ * @property int $sort
  * @property Carbon $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -31,6 +32,7 @@ class ProxyPool extends BaseModel
         'request_url',
         'ip_usable',
         'remark',
+        'sort',
     ];
 
     public function log(): HasMany

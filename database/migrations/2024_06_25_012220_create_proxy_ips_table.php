@@ -34,6 +34,7 @@ return new class extends Migration
             $table->boolean('ip_usable')->default(true)->comment('是否可用');
             $table->string('remark')->nullable()->comment('备注');
 
+            $table->unsignedInteger('sort')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

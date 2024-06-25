@@ -4,7 +4,7 @@
 
 ```bash
 # 安装包管理
-composer install
+composer update --no-dev
 # 创建软连接
 php artisan storage:link
 # 创建配置文件并配置好数据库信息

@@ -68,6 +68,7 @@ return new class extends Migration
             $table->foreignId('extract_relation_id')->comment('提取关联id,代理池id或代理ip的id');
             $table->unsignedTinyInteger('extract_type')->comment('提取类型1代理池2代理IP');
             $table->ipAddress()->comment('提取的ip地址');
+            $table->ipAddress('from_ip_address')->nullable()->comment('来自哪个IP地址请求过来的');
 
             $table->timestamp('created_at')->nullable();
         });

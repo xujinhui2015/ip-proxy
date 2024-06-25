@@ -144,6 +144,7 @@ class ProxyService
             'extract_relation_id' => $proxyPool->id,
             'extract_type' => ProxyExtractPriorityEnum::Pool,
             'ip_address' => $ipAddress,
+            'from_ip_address' => request()->ip()
         ]);
         return $ipAddress;
     }
@@ -155,6 +156,7 @@ class ProxyService
             'extract_relation_id' => $proxyIp->id,
             'extract_type' => ProxyExtractPriorityEnum::Ip,
             'ip_address' => $ipAddress,
+            'from_ip_address' => request()->ip()
         ]);
         return $ipAddress;
     }

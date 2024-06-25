@@ -25,6 +25,7 @@ class ProxyIpExtractLog extends BaseModel
         'extract_relation_id',
         'extract_type',
         'ip_address',
+        'from_ip_address',
     ];
 
 }

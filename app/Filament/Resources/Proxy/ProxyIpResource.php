@@ -52,17 +52,14 @@ class ProxyIpResource extends Resource
                 Tables\Columns\TextColumn::make('remark')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('删除时间'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('创建时间'),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('更新时间'),

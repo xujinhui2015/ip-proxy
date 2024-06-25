@@ -1,4 +1,4 @@
-# Filament 后台脚手架
+# IP代理平台
 
 ## 配置指南
 
@@ -7,7 +7,7 @@
 composer update --no-dev
 # 创建软连接
 php artisan storage:link
-# 创建配置文件并配置好数据库信息
+# 创建配置文件并配置好数据库以及APP_URL
 cp .\.env.example .env
 # 生成APP_KEY
 php artisan key:generate

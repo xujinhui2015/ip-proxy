@@ -57,17 +57,14 @@ class ProxyExtractResource extends Resource
                 Tables\Columns\ToggleColumn::make('is_usable')
                     ->label('是否启用'),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('删除时间'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('创建时间'),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('更新时间'),
@@ -82,7 +79,8 @@ class ProxyExtractResource extends Resource
                             ->formatStateUsing(function (string $state):string {
                                 return env('APP_URL') . '/api/proxy/' . $state;
                             })
-                            ->label('代理地址'),
+                            ->hint('使用代理API注意，代理池里面的网站要将客户端的IP地址也填写到服务商里面')
+                            ->label('代理API'),
                     ])->label('获取代理IP地址'),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

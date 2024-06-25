@@ -40,7 +40,6 @@ class ProxyExtractLogResource extends Resource
                     ->searchable()
                     ->label('客户端ip'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable()
                     ->label('创建时间'),
             ])

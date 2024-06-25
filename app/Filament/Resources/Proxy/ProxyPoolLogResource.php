@@ -39,21 +39,11 @@ class ProxyPoolLogResource extends Resource
                 Tables\Columns\TextColumn::make('response_data')
                     ->label('响应数据'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable()
                     ->label('创建时间'),
             ])
             ->filters([
                 //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ])
             ->defaultSort('id', 'desc');
     }

@@ -10,8 +10,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int|null $id
  * @property string|null $ip_address
- * @property int|null $ip_port
- * @property int|null $ip_usable 是否可用
+ * @property int|null $is_usable 是否可用
  * @property string $remark 备注
  * @property Carbon $deleted_at
  * @property Carbon $created_at
@@ -25,8 +24,7 @@ class ProxyIp extends BaseModel
 
     protected $fillable = [
         'ip_address',
-        'ip_port',
-        'ip_usable',
+        'is_usable',
         'remark',
     ];
 }

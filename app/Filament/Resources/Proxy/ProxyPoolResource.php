@@ -33,17 +33,18 @@ class ProxyPoolResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('pool_name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull()
+                    ->label('代理池名称'),
                 Forms\Components\TextInput::make('request_url')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('ip_usable')
-                    ->required(),
+                    ->maxLength(255)
+                    ->columnSpanFull()
+                    ->label('请求代理地址'),
                 Forms\Components\TextInput::make('remark')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('sort')
-                    ->numeric()
-                    ->default(0),
+                    ->columnSpanFull()
+                    ->maxLength(255)
+                    ->label('备注'),
             ]);
     }
 
@@ -52,28 +53,28 @@ class ProxyPoolResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('pool_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('request_url')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('ip_usable')
-                    ->boolean(),
+                    ->searchable()
+                    ->label('代理池名称'),
+                Tables\Columns\ToggleColumn::make('is_usable')
+                    ->label('是否启用'),
                 Tables\Columns\TextColumn::make('remark')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('sort')
-                    ->numeric()
-                    ->sortable(),
+                    ->searchable()
+                    ->label('备注'),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('删除时间'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('创建时间'),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('更新时间'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -90,7 +91,10 @@ class ProxyPoolResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('sort')
+            ->reorderable('sort')
+            ->paginated(false);
     }
 
     public static function getPages(): array

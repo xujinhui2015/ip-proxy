@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
  * @property int|null $id
  * @property string|null $pool_name 代理池名称
  * @property string|null $request_url 请求代理地址
- * @property int|null $ip_usable 是否可用
+ * @property int|null $is_usable 是否可用
  * @property string $remark 备注
  * @property int $sort
  * @property Carbon $deleted_at
@@ -30,7 +30,7 @@ class ProxyPool extends BaseModel
     protected $fillable = [
         'pool_name',
         'request_url',
-        'ip_usable',
+        'is_usable',
         'remark',
         'sort',
     ];

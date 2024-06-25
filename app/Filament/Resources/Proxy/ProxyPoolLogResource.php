@@ -27,41 +27,21 @@ class ProxyPoolLogResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('proxy_pool_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('request_url')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('response_code')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Textarea::make('response_data')
-                    ->required()
-                    ->columnSpanFull(),
-            ]);
-    }
-
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('proxy_pool_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('request_url')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('pool.pool_name')
+                    ->searchable()
+                    ->label('代理池名称'),
                 Tables\Columns\TextColumn::make('response_code')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('响应状态码'),
+                Tables\Columns\TextColumn::make('response_data')
+                    ->label('响应数据'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('创建时间'),
             ])
             ->filters([
                 //
@@ -74,7 +54,8 @@ class ProxyPoolLogResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('id', 'desc');
     }
 
     public static function getPages(): array

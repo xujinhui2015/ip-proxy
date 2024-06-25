@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Proxy\ProxyIpExtract;
+use App\Models\Proxy\ProxyExtract;
 use App\Services\ProxyService;
 
 class ProxyController extends Controller
@@ -13,8 +13,8 @@ class ProxyController extends Controller
      */
     public function index(string $key, ProxyService $proxyService): string
     {
-        $extract = ProxyIpExtract::query()
-            ->where('ip_usable', true)
+        $extract = ProxyExtract::query()
+            ->where('is_usable', true)
             ->where('extract_key', $key)
             ->first();
 

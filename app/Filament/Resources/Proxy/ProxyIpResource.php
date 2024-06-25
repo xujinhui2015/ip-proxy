@@ -32,13 +32,11 @@ class ProxyIpResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('ip_address')
                     ->required()
-                    ->maxLength(45),
-                Forms\Components\TextInput::make('ip_port')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Toggle::make('ip_usable')
-                    ->required(),
+                    ->maxLength(45)
+                    ->columnSpanFull()
+                    ->label('代理IP'),
                 Forms\Components\TextInput::make('remark')
+                    ->columnSpanFull()
                     ->maxLength(255),
             ]);
     }
@@ -49,25 +47,25 @@ class ProxyIpResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('ip_address')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('ip_port')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('ip_usable')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_usable')
+                    ->label('是否启用'),
                 Tables\Columns\TextColumn::make('remark')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('删除时间'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('创建时间'),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('更新时间'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

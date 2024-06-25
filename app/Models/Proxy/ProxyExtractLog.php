@@ -4,6 +4,7 @@ namespace App\Models\Proxy;
 
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -15,18 +16,23 @@ use Illuminate\Support\Carbon;
  * @property string $from_ip_address 来自哪个IP地址请求过来的
  * @property Carbon $created_at
  *
- * @method static Builder|ProxyIpExtractLog query()
+ * @method static Builder|ProxyExtractLog query()
  */
-class ProxyIpExtractLog extends BaseModel
+class ProxyExtractLog extends BaseModel
 {
     const UPDATED_AT = null;
 
     protected $fillable = [
-        'proxy_ip_extract_id',
+        'proxy_extract_id',
         'extract_relation_id',
         'extract_type',
         'ip_address',
         'from_ip_address',
     ];
+
+    public function extract(): BelongsTo
+    {
+        return $this->belongsTo(ProxyExtract::class, 'proxy_extract_id');
+    }
 
 }

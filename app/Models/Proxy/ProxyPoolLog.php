@@ -4,6 +4,7 @@ namespace App\Models\Proxy;
 
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -26,5 +27,10 @@ class ProxyPoolLog extends BaseModel
         'response_code',
         'response_data',
     ];
+
+    public function pool(): BelongsTo
+    {
+        return $this->belongsTo(ProxyPool::class, 'proxy_pool_id');
+    }
 
 }

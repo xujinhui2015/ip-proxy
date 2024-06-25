@@ -4,17 +4,18 @@ namespace App\Services;
 
 use App\Enums\Proxy\ProxyExtractPriorityEnum;
 use App\Models\Proxy\ProxyIp;
-use App\Models\Proxy\ProxyIpExtract;
+use App\Models\Proxy\ProxyExtract;
 use App\Models\Proxy\ProxyPool;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class ProxyService
 {
 
-    public function extract(ProxyIpExtract $extract): ?string
+    public function extract(ProxyExtract $extract): ?string
     {
         if (ProxyExtractPriorityEnum::Pool->isEq($extract->extract_priority)) {
             // 代理池优先
@@ -51,7 +52,7 @@ class ProxyService
     public function extractFromPool(): ?array
     {
         $proxyPool = ProxyPool::query()
-            ->where('ip_usable', true)
+            ->where('is_usable', true)
             ->orderBy('sort')
             ->first();
 
@@ -59,8 +60,16 @@ class ProxyService
             return null;
         }
 
-        // 发起请求
-        $response = Http::get($proxyPool->request_url);
+        // 做一个并发锁,保证每一个代理3秒只能发起1次请求，避免代理池端总是报接口频繁
+        $lockKey = 'proxy_pool:' . $proxyPool->id;
+        if (Cache::add($lockKey, true, 3)) {
+            // 发起请求
+            $response = Http::get($proxyPool->request_url);
+        } else {
+            // 如果未获得锁，延迟1秒后重试
+            usleep(1000000); // 延迟1秒（1000毫秒）
+            return $this->extractFromPool();
+        }
 
         // 记录请求日志
         $proxyPool->log()->create([
@@ -90,7 +99,7 @@ class ProxyService
     public function extractFromIp(): ?ProxyIp
     {
         $proxyIp = ProxyIp::query()
-            ->where('ip_usable', true)
+            ->where('is_usable', true)
             ->inRandomOrder()
             ->first();
 
@@ -101,7 +110,7 @@ class ProxyService
         // 检查代理ip是否可用
         try {
             $response = Http::withOptions([
-                'proxy' => "http://$proxyIp->ip_address:$proxyIp->ip_port",
+                'proxy' => "http://$proxyIp->ip_address",
                 'connect_timeout' => 3, // 设置连接超时时间，单位秒
                 'timeout' => 5, // 设置请求超时时间，单位秒
             ])->get('https://api.m.jd.com/'); // 替换成你要验证的目标网站
@@ -112,7 +121,6 @@ class ProxyService
             Log::error("从代理ip里面提取ip异常", [
                 $proxyIp->id,
                 $proxyIp->ip_address,
-                $proxyIp->ip_port,
                 $e->getCode(),
                 $e->getMessage(),
             ]);
@@ -137,7 +145,7 @@ class ProxyService
         return $proxyIp;
     }
 
-    private function getPool(ProxyIpExtract $extract, array $extractPoolResult): string
+    private function getPool(ProxyExtract $extract, array $extractPoolResult): string
     {
         /** @var $proxyPool ProxyPool */
         list($proxyPool, $ipAddress) = $extractPoolResult;
@@ -150,22 +158,21 @@ class ProxyService
         return $ipAddress;
     }
 
-    private function getIp(ProxyIpExtract $extract, ProxyIp $proxyIp): ?string
+    private function getIp(ProxyExtract $extract, ProxyIp $proxyIp): ?string
     {
-        $ipAddress = $proxyIp->ip_address . ':' . $proxyIp->ip_port;
         $extract->log()->create([
             'extract_relation_id' => $proxyIp->id,
             'extract_type' => ProxyExtractPriorityEnum::Ip,
-            'ip_address' => $ipAddress,
+            'ip_address' => $proxyIp->ip_address,
             'from_ip_address' => request()->ip()
         ]);
-        return $ipAddress;
+        return $proxyIp->ip_address;
     }
 
     private function setPoolInvalid(ProxyPool $proxyPool): null
     {
         $proxyPool->update([
-            'ip_usable' => false,
+            'is_usable' => false,
         ]);
         return null;
     }
@@ -173,7 +180,7 @@ class ProxyService
     private function setIpInvalid(ProxyIp $proxyIp): void
     {
         $proxyIp->update([
-            'ip_usable' => false,
+            'is_usable' => false,
         ]);
     }
 

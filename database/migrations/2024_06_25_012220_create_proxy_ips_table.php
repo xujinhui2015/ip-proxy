@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->ipAddress();
-            $table->unsignedSmallInteger('ip_port');
 
-            $table->boolean('ip_usable')->default(true)->comment('是否可用');
+            $table->boolean('is_usable')->default(true)->comment('是否可用');
 
             $table->string('remark')->nullable()->comment('备注');
 
@@ -31,7 +30,7 @@ return new class extends Migration
             $table->string('pool_name')->comment('代理池名称');
             $table->string('request_url')->comment('请求代理地址');
 
-            $table->boolean('ip_usable')->default(true)->comment('是否可用');
+            $table->boolean('is_usable')->default(true)->comment('是否可用');
             $table->string('remark')->nullable()->comment('备注');
 
             $table->unsignedInteger('sort')->default(0);
@@ -50,22 +49,22 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('proxy_ip_extracts', function (Blueprint $table) {
+        Schema::create('proxy_extracts', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedTinyInteger('extract_priority')->comment('提取优先权1代理池2代理IP');
             $table->string('extract_key')->comment('提取key');
-            $table->boolean('ip_usable')->default(true)->comment('是否可用');
+            $table->boolean('is_usable')->default(true)->comment('是否可用');
             $table->string('remark')->nullable()->comment('备注');
 
             $table->softDeletes();
             $table->timestamps();
         });
 
-        Schema::create('proxy_ip_extract_logs', function (Blueprint $table) {
+        Schema::create('proxy_extract_logs', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('proxy_ip_extract_id');
+            $table->foreignId('proxy_extract_id');
             $table->foreignId('extract_relation_id')->comment('提取关联id,代理池id或代理ip的id');
             $table->unsignedTinyInteger('extract_type')->comment('提取类型1代理池2代理IP');
             $table->ipAddress()->comment('提取的ip地址');

@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\Proxy\ProxyExtractPriorityEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Proxy\ProxyIpExtract;
-use App\Models\Proxy\ProxyPool;
 use App\Services\ProxyService;
-use GuzzleHttp\Client;
 
 class ProxyController extends Controller
 {

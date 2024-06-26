@@ -6,11 +6,8 @@ use App\Enums\Proxy\ProxyExtractPriorityEnum;
 use App\Models\Proxy\ProxyIp;
 use App\Models\Proxy\ProxyExtract;
 use App\Models\Proxy\ProxyPool;
-use GuzzleHttp\Exception\RequestException;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class ProxyService
 {

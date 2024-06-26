@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class ProxyExtractResource extends Resource
 {
@@ -37,6 +38,11 @@ class ProxyExtractResource extends Resource
                     ->columnSpanFull()
                     ->required()
                     ->label('获取优先级'),
+                Forms\Components\TextInput::make('extract_key')
+                    ->maxLength(255)
+                    ->columnSpanFull()
+                    ->default(Str::random(32))
+                    ->label('访问密钥'),
                 Forms\Components\TextInput::make('remark')
                     ->maxLength(255)
                     ->columnSpanFull()
@@ -79,7 +85,6 @@ class ProxyExtractResource extends Resource
                             ->formatStateUsing(function (string $state):string {
                                 return env('APP_URL') . '/api/proxy/' . $state;
                             })
-                            ->hint('使用代理API注意，代理池里面的网站要将客户端的IP地址也填写到服务商里面')
                             ->label('代理API'),
                     ])->label('获取代理IP地址'),
                 Tables\Actions\EditAction::make(),

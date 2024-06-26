@@ -108,39 +108,39 @@ class ProxyService
         }
 
         // 检查代理ip是否可用
-        try {
-            $response = Http::withOptions([
-                'proxy' => "http://$proxyIp->ip_address",
-                'connect_timeout' => 3, // 设置连接超时时间，单位秒
-                'timeout' => 5, // 设置请求超时时间，单位秒
-            ])->get('https://api.m.jd.com/'); // 替换成你要验证的目标网站
-        } catch (RequestException|ConnectionException $e) {
-            // 请求异常处理,IP失效
-            $this->setIpInvalid($proxyIp);
-
-            Log::error("从代理ip里面提取ip异常", [
-                $proxyIp->id,
-                $proxyIp->ip_address,
-                $e->getCode(),
-                $e->getMessage(),
-            ]);
-
-            // 重新找另一个有效IP
-            $proxyIp = $this->extractFromIp();
-
-            if (!$proxyIp) {
-                return null;
-            }
-        }
-
-        if (isset($response) && $response->status() != 200) {
-            // 重新找另一个有效IP
-            $proxyIp = $this->extractFromIp();
-
-            if (!$proxyIp) {
-                return null;
-            }
-        }
+//        try {
+//            $response = Http::withOptions([
+//                'proxy' => "http://$proxyIp->ip_address",
+//                'connect_timeout' => 3, // 设置连接超时时间，单位秒
+//                'timeout' => 5, // 设置请求超时时间，单位秒
+//            ])->get('https://api.m.jd.com/'); // 替换成你要验证的目标网站
+//        } catch (RequestException|ConnectionException $e) {
+//            // 请求异常处理,IP失效
+//            $this->setIpInvalid($proxyIp);
+//
+//            Log::error("从代理ip里面提取ip异常", [
+//                $proxyIp->id,
+//                $proxyIp->ip_address,
+//                $e->getCode(),
+//                $e->getMessage(),
+//            ]);
+//
+//            // 重新找另一个有效IP
+//            $proxyIp = $this->extractFromIp();
+//
+//            if (!$proxyIp) {
+//                return null;
+//            }
+//        }
+//
+//        if (isset($response) && $response->status() != 200) {
+//            // 重新找另一个有效IP
+//            $proxyIp = $this->extractFromIp();
+//
+//            if (!$proxyIp) {
+//                return null;
+//            }
+//        }
 
         return $proxyIp;
     }

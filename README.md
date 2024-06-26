@@ -1,4 +1,7 @@
-# IP代理平台
+# IP代理中转平台
+
+### 使用场景一：自身有多个代理ip，想每次调用随机分配给客户端
+### 使用场景二：自己在多个代理平台领取免费代理，想实现A平台额度用户，自动切换使用B平台的额度。
 
 ## 配置指南
 
@@ -16,3 +19,9 @@ php artisan migrate
 # 生成超级管理员账号
 php artisan make:filament-user
 ```
+
+
+![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)

@@ -18,6 +18,14 @@ php artisan key:generate
 php artisan migrate
 # 生成超级管理员账号
 php artisan make:filament-user
+
+
+# 代码每次更新，需要执行如下代码加速项目
+sudo -u www composer update --no-dev
+sudo -u www php artisan optimize
+sudo -u www php artisan icons:cache
+sudo -u www php artisan filament:clear-cached-components
+sudo -u www php artisan config:clear
 ```
 
 
